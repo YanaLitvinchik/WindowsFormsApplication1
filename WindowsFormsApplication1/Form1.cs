@@ -13,7 +13,8 @@ namespace WindowsFormsApplication1
     public partial class Form1 : Form
     {
         public bool IsX { get; set; }
-        Button[,] b = new Button[2, 2];
+        public bool IsWin { get; set; }
+        Button[,] b = new Button[5,5];
         public Form1()
         {
             InitializeComponent();
@@ -21,12 +22,22 @@ namespace WindowsFormsApplication1
             {
                 for (int j = 0; j < b.GetLength(1); j++)
                 {
+                    
                     b[i, j] = new Button();
                     b[i, j].Location = new Point(i * 50, j * 50);
                     b[i, j].Size = new Size(50, 50);
                     b[i, j].Text = "";
                     b[i, j].Click += B_Click;
                     this.Controls.Add(b[i, j]);
+                    
+                }
+            }
+            for (int i = 0; i < b.GetLength(0); i++)
+            {
+                for (int j = 0; j < b.GetLength(1); j++)
+                {
+                    bool booom = b.All(b[i,j].Text == "");
+
                 }
             }
             this.ClientSize = new Size(b.GetLength(0) * 50 + 3, b.GetLength(1) * 50 + 3);
@@ -78,21 +89,41 @@ namespace WindowsFormsApplication1
                     }
                 }
             }
-            WhoWins();
+         
+
 
         }
-        public void WhoWins()
+        public int WhoWins()
         {
-            for (int i = 0; i < b.GetLength(0); i++)
+            int x = 0;
+            int o = 0;
+            for (int i = 1; i < b.GetLength(0) - 1; i++)
             {
                 for (int j = 0; j < b.GetLength(1); j++)
                 {
-                    if (b[i, j].Text != "")
-                        continue;
-                    else
-                        break;
+                    if (b[i, j].Text == "X" && b[i, j].BackColor == Color.Red || b[i, j].BackColor == Color.Yellow || b[i, j].BackColor == Color.Blue)
+                        x++;
+                    else if (b[i, j].Text == "O" && b[i, j].BackColor == Color.Red || b[i, j].BackColor == Color.Yellow || b[i, j].BackColor == Color.Blue)
+                        o++;
                 }
             }
+            if (x > o)
+                return 1;// x is winner
+            else if (x < o)// o is winner
+                return 0;
+            else
+                return 2;
+
+
+
+
+            //if (WhoWins() == 1)
+            //    MessageBox.Show(" X is winner");
+            //else if (WhoWins() == 0)
+            //    MessageBox.Show(" O is winner");
+            //else
+            //    MessageBox.Show("illya syilo");
+
         }
         private void B_Click(object sender, EventArgs e)
         {
@@ -109,6 +140,7 @@ namespace WindowsFormsApplication1
                 IsX = !IsX;
             }
             Winner();
+            
         }
     }
 }
